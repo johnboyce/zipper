@@ -27,7 +27,7 @@ jobs:
 
       # Initialize Terraform (this step downloads necessary providers and initializes backend)
       - name: Terraform Init
-        run: terraform init ./infra
+        run: terraform -chdir=infra init
 
       # Plan the changes (this step shows what will change without applying)
       - name: Terraform Plan
