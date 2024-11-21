@@ -1,0 +1,43 @@
+name: Terraform CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Only trigger on pushes to the 'main' branch
+
+#  pull_request:
+#    branches:
+#      - main  # Only trigger on pull requests to the 'main' branch
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0  # Match the version used in your local setup
+
+      # Initialize Terraform (this step downloads necessary providers and initializes backend)
+      - name: Terraform Init
+        run: terraform init ./infra
+
+      # Plan the changes (this step shows what will change without applying)
+      - name: Terraform Plan
+        run: terraform plan -var-file=infra/terraform.tfvars ./infra
+
+      # Apply the changes (this step will execute the Terraform apply if push is to 'main')
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file=infra/terraform.tfvars ./infra
+        if: github.ref == 'refs/heads/main'  # Ensure apply is only triggered on the main branch
+
+      # Output the Terraform version for debugging purposes
+      - name: Terraform Version
+        run: terraform version

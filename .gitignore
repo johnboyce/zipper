@@ -22,3 +22,20 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Ignore Terraform state files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Ignore Terraform lock file
+.terraform.lock.hcl
+
+# Ignore IDE and editor files
+.idea/
+.vscode/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
