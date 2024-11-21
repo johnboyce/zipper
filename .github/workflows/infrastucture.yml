@@ -31,11 +31,11 @@ jobs:
 
       # Plan the changes (this step shows what will change without applying)
       - name: Terraform Plan
-        run: terraform plan -var-file=infra/terraform.tfvars ./infra
+        run: terraform -chdir=infra plan -var-file=infra/terraform.tfvars
 
       # Apply the changes (this step will execute the Terraform apply if push is to 'main')
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var-file=infra/terraform.tfvars ./infra
+        run: terraform -chdir=infra apply -auto-approve -var-file=infra/terraform.tfvars
         if: github.ref == 'refs/heads/main'  # Ensure apply is only triggered on the main branch
 
       # Output the Terraform version for debugging purposes
